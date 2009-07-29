@@ -1,0 +1,26 @@
+To get started:
+
+- Create a class derived from eqQt::QtMainWindow. This will contain your GUI,
+  and an eqQt::QtGLWidget (or a derived class) as an OpenGL viewport.
+  
+- Create a class derived from eqQt::QtGLContextCreator. This is a helper class
+  to create OpenGL contexts in the main thread, which is necessary in Qt.
+  This class has to override the contextRequestEvent function. A typical
+  implementation might look like this:
+  
+    void ContextCreator::contextRequestEvent( eqQt::QtGLContextRequestEvent* pEvent )
+    {
+      MainWindow* pMW = new MainWindow();
+      eqQt::QtGLWidget* pWidget = pMW->initGL( pEvent->getQtWindow(), pEvent->getContext() );
+      pMW->show();
+    }
+  
+- In your main() function:
+  - Create the QApplication instance:
+      QApplication q;
+  - Create your context creator instance:
+      ContextCreator cc;
+  - Start Equalizer in a separate thread (i.e., create a thread that does in
+    its run() what eqPly or eVolve do in main()).
+  - Run the Qt event loop:
+      int result = q.exec();
