@@ -19,7 +19,13 @@
 #define EQQT_QTWINDOW_H
 
 
+#include <set>
+
 #include <eq/client/osWindow.h>
+
+#include <QtCore/QMutex>
+
+#include "qtWindowListener.h"
 
 class QGLContext;
 class QGLFormat;
@@ -30,15 +36,57 @@ namespace eqQt
 	class QtGLWidget;
 
 	// The interface defining the minimum functionality for a Qt window.
+	// Also provides an interface to register listeners to the window state.
+	// Listeners are notified automatically before and after each eq task method.
+	// Subclasses must implement the "Impl" methods instead of the normal eq task methods,
+	// e.g. configInitImpl instead of configInit.
 	class QtWindowIF : public eq::OSWindow
 	{
 	public:
-		QtWindowIF( eq::Window* pParent ) : OSWindow( pParent ) {}
+		QtWindowIF( eq::Window* pParent ) : OSWindow( pParent ) {};
 		virtual ~QtWindowIF() {}
 
+		// eq task methods are non-virtual here,
+		// implement the "Impl" variants instead!
+		bool configInit();
+		void configExit();
+
+		void makeCurrent() const;
+		void swapBuffers();
+
+		// QGLContext access
+		virtual       QGLContext* getQGLContext() = 0;
 		virtual const QGLContext* getQGLContext() const = 0;
 
+		// eq Event handling: forward to Window
 		virtual bool processEvent( const eq::Event& event ) { return _window->processEvent( event ); }
+
+		// add/remove listeners
+		bool registerListener( QtWindowListener* pListener );
+		bool unregisterListener( QtWindowListener* pListener );
+		void unregisterAllListeners();
+
+	protected:
+		// implementations of eq task methods
+		virtual bool configInitImpl() = 0;
+		virtual void configExitImpl() = 0;
+
+		virtual void makeCurrentImpl() const;
+		virtual void swapBuffersImpl() = 0;
+
+	private:
+		void notifyListenersBeforeConfigInit();
+		void notifyListenersAfterConfigInit( bool success );
+		void notifyListenersBeforeConfigExit();
+		void notifyListenersAfterConfigExit();
+        void notifyListenersBeforeMakeCurrent() const;
+        void notifyListenersAfterMakeCurrent() const;
+        void notifyListenersBeforeSwapBuffers();
+        void notifyListenersAfterSwapBuffers();
+
+		typedef std::set< QtWindowListener* > ListenerSet;
+		ListenerSet			m_listeners;
+		mutable QMutex		m_listenersMutex;
 	};
 
 	// Default implementation of a Qt window
@@ -48,19 +96,21 @@ namespace eqQt
 		QtWindow( eq::Window* pParent );
 		virtual ~QtWindow();
 
-		virtual bool configInit();
-		virtual void configExit();
-
-		virtual void makeCurrent() const;
-		virtual void swapBuffers();
-
 		virtual void joinNVSwapBarrier( const uint32_t group, const uint32_t barrier );
 
+		virtual       QGLContext* getQGLContext()       { return m_pContext; }
 		virtual const QGLContext* getQGLContext() const { return m_pContext; }
 
 	protected:
+		virtual bool configInitImpl();
+		virtual void configExitImpl();
+
+		virtual void makeCurrentImpl() const;
+		virtual void swapBuffersImpl();
+
 		virtual bool createContext( const QGLFormat& format );
 
+	private:
 		QGLContext*		m_pContext;
 	};
 }

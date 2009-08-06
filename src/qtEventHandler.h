@@ -36,9 +36,9 @@ namespace eqQt
 {
     class QtWindowIF;
 
-	// Implementation of an eq::EventHandler for Qt events
+	// Implementation of an eq::EventHandler for Qt events.
 	// Mostly translates the QEvents it receives into eq::Events
-	// and forwards them to the QtWindowIF
+	// and forwards them to the QtWindowIF.
 	class QtEventHandler : public eq::EventHandler
     {
     public:
@@ -57,6 +57,8 @@ namespace eqQt
 		void showEvent(   QWidget* pSender, QShowEvent*   pEvent );
 		void hideEvent(   QWidget* pSender, QHideEvent*   pEvent );
 		void closeEvent(  QWidget* pSender, QCloseEvent*  pEvent );
+
+		void setQtWindow( QtWindowIF* pQtWindow ) { m_pQtWindow = pQtWindow; }
 
 	protected:
 		static uint32_t convertQtButtonToEqButton( Qt::MouseButton qtButton );

@@ -22,11 +22,14 @@
 #include <eq/eq.h>
 #include <eq/client/event.h>
 
-#include <QtGui/QMouseEvent>
+#include <QtCore/QMutex>
 #include <QtOpenGL/QGLWidget>
 
 #include "qtEventHandler.h"
+#include "qtWindowListener.h"
 
+class QMouseEvent;
+class QKeyEvent;
 class QPaintEvent;
 class QMoveEvent;
 class QResizeEvent;
@@ -38,22 +41,22 @@ class QCloseEvent;
 namespace eqQt
 {
 	class QtEventHandler;
+	class QtWindowIF;
 
 	// Implementation of a QGLWidget (basically a drawable) that forwards
-	// events it receives to its QtEventHandler
-	class QtGLWidget : public QGLWidget
+	// events it receives to its QtEventHandler.
+	class QtGLWidget : public QGLWidget, protected QtWindowListener
 	{
 		Q_OBJECT
 
 	public:
-		QtGLWidget( QtWindowIF* pQtWindow, QGLContext* pGLContext, QWidget* pParent );
-		~QtGLWidget();
-
-		QGLContext* getQGLContext() { return m_pGLContext; }
-
-		QtEventHandler* getQtEventHandler() { return &m_qtEventHandler; }
+		QtGLWidget( QtWindowIF* pQtWindow, QWidget* pParent );
+		virtual ~QtGLWidget();
 
 	protected:
+		eqQt::QtWindowIF*	lockQtWindow();
+		void				unlockQtWindow();
+
 		virtual void mousePressEvent(   QMouseEvent* pEvent );
 		virtual void mouseReleaseEvent( QMouseEvent* pEvent );
 		virtual void mouseMoveEvent(    QMouseEvent* pEvent );
@@ -68,10 +71,13 @@ namespace eqQt
 		virtual void hideEvent(   QHideEvent*   pEvent );
 		virtual void closeEvent(  QCloseEvent*  pEvent );
 
-	private:
-		QGLContext*		m_pGLContext;
+		virtual void beforeConfigExit();
 
-		QtEventHandler	m_qtEventHandler;
+	private:
+		QtWindowIF*			m_pQtWindow;
+		QMutex				m_mutex;
+
+		QtEventHandler		m_qtEventHandler;
 	};
 }
 

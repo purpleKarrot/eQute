@@ -42,6 +42,9 @@ namespace eqQt
 
 	void QtEventHandler::mousePressEvent( QWidget* pSender, QMouseEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::POINTER_BUTTON_PRESS;
@@ -70,6 +73,9 @@ namespace eqQt
 
 	void QtEventHandler::mouseReleaseEvent( QWidget* pSender, QMouseEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::POINTER_BUTTON_RELEASE;
@@ -96,6 +102,9 @@ namespace eqQt
 
 	void QtEventHandler::mouseMoveEvent( QWidget* pSender, QMouseEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::POINTER_MOTION;
@@ -121,6 +130,9 @@ namespace eqQt
 
 	void QtEventHandler::keyPressEvent( QWidget* pSender, QKeyEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::KEY_PRESS;
@@ -133,6 +145,9 @@ namespace eqQt
 
 	void QtEventHandler::keyReleaseEvent( QWidget* pSender, QKeyEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::KEY_RELEASE;
@@ -145,6 +160,9 @@ namespace eqQt
 
 	void QtEventHandler::moveEvent( QWidget* pSender, QMoveEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::WINDOW_RESIZE;
@@ -160,6 +178,9 @@ namespace eqQt
 
 	void QtEventHandler::resizeEvent( QWidget* pSender, QResizeEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::WINDOW_RESIZE;
@@ -175,6 +196,9 @@ namespace eqQt
 
 	void QtEventHandler::showEvent( QWidget* pSender, QShowEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::WINDOW_SHOW;
@@ -190,6 +214,9 @@ namespace eqQt
 
 	void QtEventHandler::hideEvent( QWidget* pSender, QHideEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::WINDOW_HIDE;
@@ -201,6 +228,9 @@ namespace eqQt
 
 	void QtEventHandler::closeEvent( QWidget* pSender, QCloseEvent* pEvent )
 	{
+		if( !m_pQtWindow )
+			return;
+
 		// translate to eq::Event
 		eq::Event eqEvent;
 		eqEvent.type = eq::Event::WINDOW_CLOSE;
@@ -403,6 +433,8 @@ namespace eqQt
 
 	void QtEventHandler::fillOriginatorID( eq::Event& eqEvent )
 	{
+		EQASSERT( m_pQtWindow != 0 );
+
 		eqEvent.originator = m_pQtWindow->getWindow()->getID();
 	}
 

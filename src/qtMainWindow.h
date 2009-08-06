@@ -21,7 +21,11 @@
 
 #include <eq/client/event.h>
 
+#include <QtCore/QMutex>
 #include <QtGui/QMainWindow>
+
+#include "qtEventHandler.h"
+#include "qtWindowListener.h"
 
 
 class QKeyEvent;
@@ -30,31 +34,35 @@ class QCloseEvent;
 
 namespace eqQt
 {
-	class QtEventHandler;
 	class QtWindowIF;
 
 	// Implementation of a QMainWindow that forwards events it receives
-	// to a QtEventHandler (if one is set)
-	// Meant to be subclassed by an application-specific MainWindow
-	class QtMainWindow : public QMainWindow
+	// to a QtEventHandler (if one is set).
+	// Meant to be subclassed by an application-specific MainWindow.
+	class QtMainWindow : public QMainWindow, protected QtWindowListener
 	{
 		Q_OBJECT
 
 	public:
-		QtMainWindow( QWidget* pParent = 0 );
+		QtMainWindow( QtWindowIF* pQtWindow, QWidget* pParent = 0 );
 		virtual ~QtMainWindow();
 
 	protected:
-		QtEventHandler*	getQtEventHandler()									 { return m_pQtEventHandler; }
-		void			setQtEventHandler( QtEventHandler* pQtEventHandler ) { m_pQtEventHandler = pQtEventHandler; }
+		eqQt::QtWindowIF*	lockQtWindow();
+		void				unlockQtWindow();
 
 		virtual void keyPressEvent(   QKeyEvent* pEvent );
 		virtual void keyReleaseEvent( QKeyEvent* pEvent );
 
 		virtual void closeEvent( QCloseEvent* pEvent );
 
+		virtual void beforeConfigExit();
+
 	private:
-		QtEventHandler*		m_pQtEventHandler;
+		QtWindowIF*			m_pQtWindow;
+		QMutex				m_mutex;
+
+		QtEventHandler		m_qtEventHandler;
 	};
 }
 

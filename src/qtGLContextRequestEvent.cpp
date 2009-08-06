@@ -22,8 +22,8 @@
 
 namespace eqQt
 {
-	QtGLContextRequestEvent::QtGLContextRequestEvent( QtWindowIF* pQtWindow, QGLContext* pContext, QWaitCondition* pNotify )
-		: QEvent( ( QEvent::Type )QtGLContextRequest ), m_pQtWindow( pQtWindow ), m_pContext( pContext ), m_pNotify( pNotify )
+	QtGLContextRequestEvent::QtGLContextRequestEvent( QtWindowIF* pQtWindow, QWaitCondition* pNotify )
+		: QEvent( ( QEvent::Type )QtGLContextRequest ), m_pQtWindow( pQtWindow ), m_pNotify( pNotify )
 	{
 	}
 

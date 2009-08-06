@@ -33,11 +33,11 @@ namespace eqQt
 {
 	class QtGLContextRequestEvent;
 
-	// Helper class to create QGLContexts in the main (Qt gui) thread
+	// Helper class to create QGLContexts in the main (Qt gui) thread.
 	// This is necessary because a QGLContext needs a QGLWidget, which
-	// may only be created by the main thread
+	// may only be created by the main thread.
 	// Has to be subclassed by an application-specific class that implements
-	// the actual contextRequestEvent function
+	// the actual contextRequestEvent function.
 	class QtGLContextCreator : public QObject
 	{
 		Q_OBJECT

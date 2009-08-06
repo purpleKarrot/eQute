@@ -17,8 +17,11 @@
 
 #include "qtGLWidget.h"
 
+#include <QtCore/QMutexLocker>
 #include <QtCore/QPoint>
 #include <QtCore/QSize>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QShowEvent>
@@ -30,38 +33,68 @@
 
 namespace eqQt
 {
-	QtGLWidget::QtGLWidget( QtWindowIF* pQtWindow, QGLContext* pGLContext, QWidget* pParent )
-		: QGLWidget( pGLContext, pParent ), m_pGLContext( pGLContext ), m_qtEventHandler( pQtWindow )
+	QtGLWidget::QtGLWidget( QtWindowIF* pQtWindow, QWidget* pParent )
+		: QGLWidget( pQtWindow->getQGLContext(), pParent ), m_pQtWindow( pQtWindow ), m_qtEventHandler( pQtWindow )
 	{
 		setAutoBufferSwap( false );
+
+		QMutexLocker locker( &m_mutex );
+
+		EQCHECK( m_pQtWindow->registerListener( this ) );
 	}
 
 	QtGLWidget::~QtGLWidget()
 	{
+		QMutexLocker locker( &m_mutex );
+
+		if( m_pQtWindow ) {
+			EQCHECK( m_pQtWindow->unregisterListener( this ) );
+		}
+	}
+
+	eqQt::QtWindowIF* QtGLWidget::lockQtWindow()
+	{
+		m_mutex.lock();
+		return m_pQtWindow;
+	}
+
+	void QtGLWidget::unlockQtWindow()
+	{
+		m_mutex.unlock();
 	}
 
 	void QtGLWidget::mousePressEvent( QMouseEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.mousePressEvent( this, pEvent );
 	}
 
 	void QtGLWidget::mouseReleaseEvent( QMouseEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.mouseReleaseEvent( this, pEvent );
 	}
 
 	void QtGLWidget::mouseMoveEvent( QMouseEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.mouseMoveEvent( this, pEvent );
 	}
 
 	void QtGLWidget::keyPressEvent( QKeyEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.keyPressEvent( this, pEvent );
 	}
 
 	void QtGLWidget::keyReleaseEvent( QKeyEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.keyReleaseEvent( this, pEvent );
 	}
 
@@ -73,28 +106,46 @@ namespace eqQt
 
 	void QtGLWidget::moveEvent( QMoveEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.moveEvent( this, pEvent );
 	}
 
 	void QtGLWidget::resizeEvent( QResizeEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.resizeEvent( this, pEvent );
 	}
 
 	void QtGLWidget::showEvent( QShowEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.showEvent( this, pEvent );
 	}
 
 	void QtGLWidget::hideEvent( QHideEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		m_qtEventHandler.hideEvent( this, pEvent );
 	}
 
 	void QtGLWidget::closeEvent( QCloseEvent* pEvent )
 	{
+		QMutexLocker locker( &m_mutex );
+
 		// this is only received by top-level windows,
 		// so we'll probably never get here
 		m_qtEventHandler.closeEvent( this, pEvent );
+	}
+
+	void QtGLWidget::beforeConfigExit()
+	{
+		QMutexLocker locker( &m_mutex );
+
+		m_pQtWindow = 0;
+		m_qtEventHandler.setQtWindow( 0 );
 	}
 }

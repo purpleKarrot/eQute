@@ -17,41 +17,71 @@
 
 #include "qtMainWindow.h"
 
+#include <QtCore/QCoreApplication>
+#include <QtCore/QMutexLocker>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QCloseEvent>
 
-#include "qtEventHandler.h"
+#include "qtWindow.h"
 
 
 namespace eqQt
 {
-	QtMainWindow::QtMainWindow( QWidget* pParent )
-		: QMainWindow( pParent ), m_pQtEventHandler( 0 )
+	QtMainWindow::QtMainWindow( QtWindowIF* pQtWindow, QWidget* pParent )
+		: QMainWindow( pParent ), m_pQtWindow( pQtWindow ), m_qtEventHandler( pQtWindow )
 	{
+		QMutexLocker locker( &m_mutex );
+
+		EQCHECK( m_pQtWindow->registerListener( this ) );
 	}
 
 	QtMainWindow::~QtMainWindow()
 	{
+		QMutexLocker locker( &m_mutex );
+
+		if( m_pQtWindow ) {
+			EQCHECK( m_pQtWindow->unregisterListener( this ) );
+		}
+	}
+
+	eqQt::QtWindowIF* QtMainWindow::lockQtWindow()
+	{
+		m_mutex.lock();
+		return m_pQtWindow;
+	}
+
+	void QtMainWindow::unlockQtWindow()
+	{
+		m_mutex.unlock();
 	}
 
 	void QtMainWindow::keyPressEvent( QKeyEvent* pEvent )
 	{
-		if( m_pQtEventHandler ) {
-			m_pQtEventHandler->keyPressEvent( this, pEvent );
-		}
+		QMutexLocker locker( &m_mutex );
+
+		m_qtEventHandler.keyPressEvent( this, pEvent );
 	}
 
 	void QtMainWindow::keyReleaseEvent( QKeyEvent* pEvent )
 	{
-		if( m_pQtEventHandler ) {
-			m_pQtEventHandler->keyReleaseEvent( this, pEvent );
-		}
+		QMutexLocker locker( &m_mutex );
+
+		m_qtEventHandler.keyReleaseEvent( this, pEvent );
 	}
 
 	void QtMainWindow::closeEvent( QCloseEvent* pEvent )
 	{
-		if( m_pQtEventHandler ) {
-			m_pQtEventHandler->closeEvent( this, pEvent );
-		}
+		QMutexLocker locker( &m_mutex );
+
+		m_qtEventHandler.closeEvent( this, pEvent );
+	}
+
+	void QtMainWindow::beforeConfigExit()
+	{
+		QMutexLocker locker( &m_mutex );
+
+		// unregister the qtwindow, so no more events will be sent there
+		m_pQtWindow = 0;
+		m_qtEventHandler.setQtWindow( 0 );
 	}
 }
