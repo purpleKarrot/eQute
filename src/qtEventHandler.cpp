@@ -420,6 +420,12 @@ namespace eqQt
 
 		// still here -> no special key
 
+		// is there a key value?
+		if( pEvent->text().isEmpty() ) {
+			// no key value, don't know key
+			return eq::KC_VOID;
+		}
+
 		// get ascii value
 		char ascii = pEvent->text().at( 0 ).toAscii();
 
