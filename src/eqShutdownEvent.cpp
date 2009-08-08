@@ -15,35 +15,13 @@
 * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "qtGLContextCreator.h"
-
-#include "qtGLContextRequestEvent.h"
+#include "eqShutdownEvent.h"
 
 
 namespace eqQt
 {
-	QtGLContextCreator* QtGLContextCreator::ms_pInstance = 0;
-
-	QtGLContextCreator::QtGLContextCreator()
+	EqShutdownEvent::EqShutdownEvent()
+		: QEvent( ( QEvent::Type )EqShutdown )
 	{
-		Q_ASSERT_X( !QtGLContextCreator::ms_pInstance, "QtGLWidgetRequestQueue", "there should be only one instance");
-
-		QtGLContextCreator::ms_pInstance = this;
-	}
-
-	bool QtGLContextCreator::event( QEvent* pEvent )
-	{
-		if( pEvent->type() == QtGLContextRequestEvent::QtGLContextRequest ) {
-			QtGLContextRequestEvent* pContextEvent = ( QtGLContextRequestEvent* )pEvent;
-
-			contextRequestEvent( pContextEvent );
-
-			//TODO check if successful?
-			pContextEvent->contextFinished();
-
-			return true;
-		} else {
-			return QObject::event( pEvent );
-		}
 	}
 }

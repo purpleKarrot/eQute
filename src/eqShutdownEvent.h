@@ -15,35 +15,31 @@
 * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "qtGLContextCreator.h"
+#ifndef EQQT_EQSHUTDOWNEVENT_H
+#define EQQT_EQSHUTDOWNEVENT_H
 
-#include "qtGLContextRequestEvent.h"
+
+#include <QtCore/QEvent>
+
+class QGLContext;
+class QWaitCondition;
 
 
 namespace eqQt
 {
-	QtGLContextCreator* QtGLContextCreator::ms_pInstance = 0;
-
-	QtGLContextCreator::QtGLContextCreator()
+	// Custom Qt event, to be sent when Equalizer is shutting down
+	// (i.e. configExit is called).
+	class EqShutdownEvent : public QEvent
 	{
-		Q_ASSERT_X( !QtGLContextCreator::ms_pInstance, "QtGLWidgetRequestQueue", "there should be only one instance");
+	public:
+		enum Type
+		{
+			EqShutdown = QEvent::User + 10001
+		};
 
-		QtGLContextCreator::ms_pInstance = this;
-	}
-
-	bool QtGLContextCreator::event( QEvent* pEvent )
-	{
-		if( pEvent->type() == QtGLContextRequestEvent::QtGLContextRequest ) {
-			QtGLContextRequestEvent* pContextEvent = ( QtGLContextRequestEvent* )pEvent;
-
-			contextRequestEvent( pContextEvent );
-
-			//TODO check if successful?
-			pContextEvent->contextFinished();
-
-			return true;
-		} else {
-			return QObject::event( pEvent );
-		}
-	}
+		EqShutdownEvent();
+	};
 }
+
+
+#endif EQQT_EQSHUTDOWNEVENT_H

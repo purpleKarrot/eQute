@@ -22,6 +22,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QCloseEvent>
 
+#include "eqShutdownEvent.h"
 #include "qtWindow.h"
 
 
@@ -55,6 +56,18 @@ namespace eqQt
 		m_mutex.unlock();
 	}
 
+	bool QtMainWindow::event( QEvent* pEvent )
+	{
+		switch( pEvent->type() ) {
+			case EqShutdownEvent::EqShutdown:
+				eqShutdownEvent( ( EqShutdownEvent* )pEvent );
+				return true;
+
+			default:
+				return QMainWindow::event( pEvent );
+		}
+	}
+
 	void QtMainWindow::keyPressEvent( QKeyEvent* pEvent )
 	{
 		QMutexLocker locker( &m_mutex );
@@ -76,6 +89,11 @@ namespace eqQt
 		m_qtEventHandler.closeEvent( this, pEvent );
 	}
 
+	void QtMainWindow::eqShutdownEvent( EqShutdownEvent* pEvent )
+	{
+		close();
+	}
+
 	void QtMainWindow::beforeConfigExit()
 	{
 		QMutexLocker locker( &m_mutex );
@@ -83,5 +101,12 @@ namespace eqQt
 		// unregister the qtwindow, so no more events will be sent there
 		m_pQtWindow = 0;
 		m_qtEventHandler.setQtWindow( 0 );
+	}
+
+	void QtMainWindow::afterConfigExit()
+	{
+		// send an EqShutdownEvent to ourselves, to be handled in the main thread
+		EqShutdownEvent* pEvent = new EqShutdownEvent();
+		qApp->postEvent( this, pEvent );
 	}
 }

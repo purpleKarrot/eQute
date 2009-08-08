@@ -19,8 +19,8 @@
 #define EQQT_QTGLWIDGET_H
 
 
-#include <eq/eq.h>
 #include <eq/client/event.h>
+#include <GL/glew.h>
 
 #include <QtCore/QMutex>
 #include <QtOpenGL/QGLWidget>
@@ -40,7 +40,7 @@ class QCloseEvent;
 
 namespace eqQt
 {
-	class QtEventHandler;
+	class EqShutdownEvent;
 	class QtWindowIF;
 
 	// Implementation of a QGLWidget (basically a drawable) that forwards
@@ -57,6 +57,8 @@ namespace eqQt
 		eqQt::QtWindowIF*	lockQtWindow();
 		void				unlockQtWindow();
 
+		virtual bool event( QEvent* pEvent );
+
 		virtual void mousePressEvent(   QMouseEvent* pEvent );
 		virtual void mouseReleaseEvent( QMouseEvent* pEvent );
 		virtual void mouseMoveEvent(    QMouseEvent* pEvent );
@@ -71,7 +73,10 @@ namespace eqQt
 		virtual void hideEvent(   QHideEvent*   pEvent );
 		virtual void closeEvent(  QCloseEvent*  pEvent );
 
+		virtual void eqShutdownEvent( EqShutdownEvent* pEvent );
+
 		virtual void beforeConfigExit();
+		virtual void afterConfigExit();
 
 	private:
 		QtWindowIF*			m_pQtWindow;

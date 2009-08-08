@@ -34,6 +34,7 @@ class QCloseEvent;
 
 namespace eqQt
 {
+	class EqShutdownEvent;
 	class QtWindowIF;
 
 	// Implementation of a QMainWindow that forwards events it receives
@@ -51,12 +52,17 @@ namespace eqQt
 		eqQt::QtWindowIF*	lockQtWindow();
 		void				unlockQtWindow();
 
+		virtual bool event( QEvent* pEvent );
+
 		virtual void keyPressEvent(   QKeyEvent* pEvent );
 		virtual void keyReleaseEvent( QKeyEvent* pEvent );
 
 		virtual void closeEvent( QCloseEvent* pEvent );
 
+		virtual void eqShutdownEvent( EqShutdownEvent* pEvent );
+
 		virtual void beforeConfigExit();
+		virtual void afterConfigExit();
 
 	private:
 		QtWindowIF*			m_pQtWindow;

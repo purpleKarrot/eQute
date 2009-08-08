@@ -17,6 +17,7 @@
 
 #include "qtGLWidget.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QMutexLocker>
 #include <QtCore/QPoint>
 #include <QtCore/QSize>
@@ -28,6 +29,7 @@
 #include <QtGui/QHideEvent>
 #include <QtGui/QCloseEvent>
 
+#include "eqShutdownEvent.h"
 #include "qtWindow.h"
 
 
@@ -61,6 +63,18 @@ namespace eqQt
 	void QtGLWidget::unlockQtWindow()
 	{
 		m_mutex.unlock();
+	}
+
+	bool QtGLWidget::event( QEvent* pEvent )
+	{
+		switch( pEvent->type() ) {
+			case EqShutdownEvent::EqShutdown:
+				eqShutdownEvent( ( EqShutdownEvent* )pEvent );
+				return true;
+
+			default:
+				return QGLWidget::event( pEvent );
+		}
 	}
 
 	void QtGLWidget::mousePressEvent( QMouseEvent* pEvent )
@@ -141,11 +155,23 @@ namespace eqQt
 		m_qtEventHandler.closeEvent( this, pEvent );
 	}
 
+	void QtGLWidget::eqShutdownEvent( EqShutdownEvent* pEvent )
+	{
+		// default implementation does nothing
+	}
+
 	void QtGLWidget::beforeConfigExit()
 	{
 		QMutexLocker locker( &m_mutex );
 
 		m_pQtWindow = 0;
 		m_qtEventHandler.setQtWindow( 0 );
+	}
+
+	void QtGLWidget::afterConfigExit()
+	{
+		// send an EqShutdownEvent to ourselves, to be handled in the main thread
+		EqShutdownEvent* pEvent = new EqShutdownEvent();
+		qApp->postEvent( this, pEvent );
 	}
 }
