@@ -10,8 +10,7 @@ To get started:
   
     void ContextCreator::contextRequestEvent( eqQt::QtGLContextRequestEvent* pEvent )
     {
-      MainWindow* pMW = new MainWindow();
-      eqQt::QtGLWidget* pWidget = pMW->initGL( pEvent->getQtWindow(), pEvent->getContext() );
+      MainWindow* pMW = new MainWindow( pEvent->getQtWindow() );
       pMW->show();
     }
   
