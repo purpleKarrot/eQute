@@ -114,8 +114,9 @@ namespace eqQt
 
 	void QtGLWidget::paintEvent( QPaintEvent* pEvent )
 	{
-		// do nothing, the equalizer thread handles this
-		//TODO maybe create an EXPOSE event?
+		QMutexLocker locker( &m_mutex );
+
+		m_qtEventHandler.paintEvent( this, pEvent );
 	}
 
 	void QtGLWidget::moveEvent( QMoveEvent* pEvent )

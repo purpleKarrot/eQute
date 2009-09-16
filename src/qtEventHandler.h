@@ -52,6 +52,7 @@ namespace eqQt
 		void keyPressEvent(   QWidget* pSender, QKeyEvent* pEvent );
 		void keyReleaseEvent( QWidget* pSender, QKeyEvent* pEvent );
 
+		void paintEvent(  QWidget* pSender, QPaintEvent*  pEvent );
 		void moveEvent(   QWidget* pSender, QMoveEvent*   pEvent );
 		void resizeEvent( QWidget* pSender, QResizeEvent* pEvent );
 		void showEvent(   QWidget* pSender, QShowEvent*   pEvent );

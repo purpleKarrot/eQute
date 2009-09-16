@@ -158,6 +158,20 @@ namespace eqQt
 		m_pQtWindow->processEvent( eqEvent );
 	}
 
+	void QtEventHandler::paintEvent( QWidget* pSender, QPaintEvent*  pEvent )
+	{
+		if( !m_pQtWindow )
+			return;
+
+		// translate to eq::Event
+		eq::Event eqEvent;
+		eqEvent.type = eq::Event::WINDOW_EXPOSE;
+
+		fillOriginatorID( eqEvent );
+
+		m_pQtWindow->processEvent( eqEvent );
+	}
+
 	void QtEventHandler::moveEvent( QWidget* pSender, QMoveEvent* pEvent )
 	{
 		if( !m_pQtWindow )
