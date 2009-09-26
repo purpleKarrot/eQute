@@ -19,7 +19,8 @@
 #define EQQT_QTEVENTHANDLER_H
 
 
-#include <eq/eq.h>
+#include <eq/client/event.h>
+#include <eq/client/eventHandler.h>
 
 #include <QtGui/QMouseEvent>
 
