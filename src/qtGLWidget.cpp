@@ -36,12 +36,13 @@
 namespace eqQt
 {
 	QtGLWidget::QtGLWidget( QtWindowIF* pQtWindow, QWidget* pParent )
-		: QGLWidget( pQtWindow->getQGLContext(), pParent ), m_pQtWindow( pQtWindow ), m_qtEventHandler( pQtWindow )
+		: QGLWidget( pQtWindow->getQGLContext(), pParent, pQtWindow->getShareQtGLWidget() ), m_pQtWindow( pQtWindow ), m_qtEventHandler( pQtWindow )
 	{
 		setAutoBufferSwap( false );
 
 		QMutexLocker locker( &m_mutex );
 
+		m_pQtWindow->setQtGLWidget( this );
 		EQCHECK( m_pQtWindow->registerListener( this ) );
 	}
 

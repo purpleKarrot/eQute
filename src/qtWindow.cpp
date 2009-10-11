@@ -25,6 +25,7 @@
 
 #include "qtGLContextCreator.h"
 #include "qtGLContextRequestEvent.h"
+#include "qtGLWidget.h"
 
 
 namespace eqQt
@@ -265,12 +266,42 @@ namespace eqQt
 
 
 	QtWindow::QtWindow( eq::Window* pParent )
-		: QtWindowIF( pParent ), m_pContext( 0 )
+		: QtWindowIF( pParent ), m_pContext( 0 ), m_pWidget( 0 )
 	{
 	}
 
 	QtWindow::~QtWindow()
 	{
+	}
+
+	QtGLWidget* QtWindow::getShareQtGLWidget()
+	{
+		eq::Window* pShareWindow = getWindow()->getSharedContextWindow();
+		if( pShareWindow ) {
+			eq::OSWindow* pShareOSWindow = pShareWindow->getOSWindow();
+			QtWindow* pShareQtWindow = dynamic_cast< QtWindow* >( pShareOSWindow );
+
+			if( pShareQtWindow ) {
+				return pShareQtWindow->getQtGLWidget();
+			}
+		}
+
+		return 0;
+	}
+
+	const QtGLWidget* QtWindow::getShareQtGLWidget() const
+	{
+		const eq::Window* pShareWindow = getWindow()->getSharedContextWindow();
+		if( pShareWindow ) {
+			const eq::OSWindow* pShareOSWindow = pShareWindow->getOSWindow();
+			const QtWindow* pShareQtWindow = dynamic_cast< const QtWindow* >( pShareOSWindow );
+
+			if( pShareQtWindow ) {
+				return pShareQtWindow->getQtGLWidget();
+			}
+		}
+
+		return 0;
 	}
 
 	bool QtWindow::configInitImpl()
@@ -387,8 +418,7 @@ namespace eqQt
 			return;
 
 		//TODO implement this?
-		EQWARN << "NV Swap group extension not supported for Qt windows" << endl;
-		return;
+		EQWARN << "QtWindow::joinNVSwapBarrier: NV Swap group extension not supported for Qt windows" << endl;
 	}
 
 	bool QtWindow::createContext( const QGLFormat& format )
@@ -396,6 +426,12 @@ namespace eqQt
 		EQASSERT( !m_pContext );
 
 		m_pContext = new QGLContext( format );
+
+		QtGLWidget* pShareWidget = getShareQtGLWidget();
+		if( pShareWidget ) {
+			// make share context un-current, otherwise sharing fails
+			pShareWidget->doneCurrent();
+		}
 
 		QWaitCondition* pWaitCondition = new QWaitCondition();
 		QtGLContextRequestEvent* pEvent = new QtGLContextRequestEvent( this, pWaitCondition );
@@ -407,6 +443,11 @@ namespace eqQt
 		mutex.unlock();
 
 		delete pWaitCondition;
+
+		bool sharing = m_pContext->isSharing();
+		if( pShareWidget && !m_pContext->isSharing() ) {
+			EQWARN << "QtWindow::createContext: context sharing failed!" << std::endl;
+		}
 
 		return m_pContext->isValid();
 	}

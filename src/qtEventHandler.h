@@ -35,15 +35,15 @@ class QCloseEvent;
 
 namespace eqQt
 {
-    class QtWindowIF;
+	class QtWindowIF;
 
 	// Implementation of an eq::EventHandler for Qt events.
 	// Mostly translates the QEvents it receives into eq::Events
 	// and forwards them to the QtWindowIF.
 	class QtEventHandler : public eq::EventHandler
-    {
-    public:
-        QtEventHandler( QtWindowIF* pQtWindow );
+	{
+	public:
+		QtEventHandler( QtWindowIF* pQtWindow );
 		virtual ~QtEventHandler();
 
 		void mousePressEvent(   QWidget* pSender, QMouseEvent* pEvent );
@@ -71,9 +71,9 @@ namespace eqQt
 		void fillOriginatorID(  eq::Event& eqEvent );
 		void fillRenderContext( eq::Event& eqEvent );
 
-    private:
-        QtWindowIF*		m_pQtWindow;
-    };
+	private:
+		QtWindowIF*		m_pQtWindow;
+	};
 }
 
 

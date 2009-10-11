@@ -58,6 +58,13 @@ namespace eqQt
 		virtual       QGLContext* getQGLContext() = 0;
 		virtual const QGLContext* getQGLContext() const = 0;
 
+		// QtGLWidget access
+		virtual void              setQtGLWidget( QtGLWidget* pWidget ) = 0;
+		virtual       QtGLWidget* getQtGLWidget() = 0;
+		virtual const QtGLWidget* getQtGLWidget() const = 0;
+		virtual       QtGLWidget* getShareQtGLWidget() = 0;
+		virtual const QtGLWidget* getShareQtGLWidget() const = 0;
+
 		// eq Event handling: forward to Window
 		virtual bool processEvent( const eq::Event& event ) { return _window->processEvent( event ); }
 
@@ -101,6 +108,12 @@ namespace eqQt
 		virtual       QGLContext* getQGLContext()       { return m_pContext; }
 		virtual const QGLContext* getQGLContext() const { return m_pContext; }
 
+		virtual void              setQtGLWidget( QtGLWidget* pWidget ) { m_pWidget = pWidget; }
+		virtual       QtGLWidget* getQtGLWidget()       { return m_pWidget; }
+		virtual const QtGLWidget* getQtGLWidget() const { return m_pWidget; }
+		virtual       QtGLWidget* getShareQtGLWidget();
+		virtual const QtGLWidget* getShareQtGLWidget() const;
+
 	protected:
 		virtual bool configInitImpl();
 		virtual void configExitImpl();
@@ -112,6 +125,7 @@ namespace eqQt
 
 	private:
 		QGLContext*		m_pContext;
+		QtGLWidget*		m_pWidget;
 	};
 }
 

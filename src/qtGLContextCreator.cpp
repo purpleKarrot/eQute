@@ -26,7 +26,7 @@ namespace eqQt
 
 	QtGLContextCreator::QtGLContextCreator()
 	{
-		Q_ASSERT_X( !QtGLContextCreator::ms_pInstance, "QtGLWidgetRequestQueue", "there should be only one instance");
+		Q_ASSERT_X( !QtGLContextCreator::ms_pInstance, "QtGLContextCreator", "there should be only one instance");
 
 		QtGLContextCreator::ms_pInstance = this;
 	}
