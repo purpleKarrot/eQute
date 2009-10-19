@@ -101,7 +101,7 @@ namespace eqQt
 
 	void QtWindowIF::makeCurrentImpl() const
 	{
-		OSWindow::makeCurrent();
+		GLWindow::makeCurrent();
 	}
 
 	void QtWindowIF::notifyListenersBeforeConfigInit()
@@ -390,6 +390,9 @@ namespace eqQt
 
 		if( !createContext( format ) )
 			return false;
+
+		makeCurrent();
+		initGLEW();
 
 		return true;
 	}

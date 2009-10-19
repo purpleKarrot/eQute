@@ -21,7 +21,7 @@
 
 #include <set>
 
-#include <eq/client/osWindow.h>
+#include <eq/client/glWindow.h>
 
 #include <QtCore/QMutex>
 
@@ -40,10 +40,10 @@ namespace eqQt
 	// Listeners are notified automatically before and after each eq task method.
 	// Subclasses must implement the "Impl" methods instead of the normal eq task methods,
 	// e.g. configInitImpl instead of configInit.
-	class QtWindowIF : public eq::OSWindow
+	class QtWindowIF : public eq::GLWindow
 	{
 	public:
-		QtWindowIF( eq::Window* pParent ) : OSWindow( pParent ) {};
+		QtWindowIF( eq::Window* pParent ) : GLWindow( pParent ) {};
 		virtual ~QtWindowIF() {}
 
 		// eq task methods are non-virtual here,
