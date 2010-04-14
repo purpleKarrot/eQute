@@ -328,6 +328,10 @@ namespace eqQt
 			const int alphaBits = ( alphaSize > 0 ? alphaSize : 8 );
 			format.setAlphaBufferSize( alphaBits );
 		}
+		else
+		{
+			format.setAlpha( false );
+		}
 
 		const int depthSize = getIAttribute( eq::Window::IATTR_PLANES_DEPTH );
 		if( depthSize > 0  || depthSize == eq::AUTO )
@@ -336,6 +340,10 @@ namespace eqQt
 			const int depthBits = ( depthSize > 0 ? depthSize : 8 );
 			format.setDepthBufferSize( depthBits );
 		}
+		else
+		{
+			format.setDepth( false );
+		}
 
 		const int stencilSize = getIAttribute( eq::Window::IATTR_PLANES_STENCIL );
 		if( stencilSize > 0 || stencilSize == eq::AUTO )
@@ -343,6 +351,10 @@ namespace eqQt
 			format.setStencil( true );
 			const int stencilBits = ( stencilSize > 0 ? stencilSize : 1 );
 			format.setStencilBufferSize( stencilBits );
+		}
+		else
+		{
+			format.setStencil( false );
 		}
 
 		const int accumSize  = getIAttribute( eq::Window::IATTR_PLANES_ACCUM );
@@ -360,6 +372,10 @@ namespace eqQt
 			format.setAccum( true );
 			format.setAccumBufferSize( accumAlpha );
 		}
+		else
+		{
+			format.setAccum( false );
+		}
 
 		const int samplesSize  = getIAttribute( eq::Window::IATTR_PLANES_SAMPLES );
 		if( samplesSize >= 0 )
@@ -368,6 +384,10 @@ namespace eqQt
 			format.setSamples( samplesSize );
 			//TODO is there a way to check if multisampling is actually available?
 		}
+		else
+		{
+			format.setSampleBuffers( false );
+		}
 
 		if( getIAttribute( eq::Window::IATTR_HINT_STEREO ) == eq::ON ||
 			( getIAttribute( eq::Window::IATTR_HINT_STEREO )   == eq::AUTO && 
@@ -375,12 +395,20 @@ namespace eqQt
 		{
 			format.setStereo( true );
 		}
+		else
+		{
+			format.setStereo( false );
+		}
 
 		if( getIAttribute( eq::Window::IATTR_HINT_DOUBLEBUFFER ) == eq::ON ||
 			( getIAttribute( eq::Window::IATTR_HINT_DOUBLEBUFFER ) == eq::AUTO && 
 			  getIAttribute( eq::Window::IATTR_HINT_DRAWABLE )     == eq::WINDOW ) )
 		{
 			format.setDoubleBuffer( true );
+		}
+		else
+		{
+			format.setDoubleBuffer( false );
 		}
 
 		if( getIAttribute( eq::Window::IATTR_HINT_DRAWABLE ) != eq::WINDOW ) {
