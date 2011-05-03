@@ -411,6 +411,10 @@ namespace eqQt
 			format.setDoubleBuffer( false );
 		}
 
+		// HACK: require GL 3.1
+		//       if we don't do this, Qt 4.7.2 creates a 2.1 context (?!)
+		format.setVersion( 3, 1 );
+
 		if( getIAttribute( eq::Window::IATTR_HINT_DRAWABLE ) != eq::WINDOW ) {
 			EQWARN << "Unsupported drawable type " << getIAttribute( eq::Window::IATTR_HINT_DRAWABLE )
 				   << "for QtWindow, creating a window" << std::endl;
