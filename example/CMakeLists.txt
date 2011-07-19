@@ -1,7 +1,7 @@
 
 include_directories(
-  ../src
   ${CMAKE_CURRENT_BINARY_DIR}
+  ../src
   )
 
 qt4_wrap_ui(EQT_UI

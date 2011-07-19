@@ -23,5 +23,5 @@ include_directories(
   include
   )
 
-add_subdirectory(hello)
+add_subdirectory(example)
 add_subdirectory(src)
