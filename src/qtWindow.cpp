@@ -15,9 +15,24 @@
 * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <QMetaType>
+#include <QDataStream>
+#include <QTextStream>
+#include <QtCore/QVariant>
+#include <QtCore/QDir>
+#include <QtGui/QCursor>
+#include <QtGui/QPrinter>
+
 #include "qtWindow.h"
 
 #include <eq/client/global.h>
+
+#undef None
+#undef KeyPress
+#undef KeyRelease
+#undef FocusIn
+#undef FocusOut
+#undef FontChange
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QWaitCondition>
@@ -278,7 +293,7 @@ namespace eqQt
 	{
 		eq::Window* pShareWindow = getWindow()->getSharedContextWindow();
 		if( pShareWindow ) {
-			eq::OSWindow* pShareOSWindow = pShareWindow->getOSWindow();
+			eq::SystemWindow* pShareOSWindow = pShareWindow->getSystemWindow();
 			QtWindow* pShareQtWindow = dynamic_cast< QtWindow* >( pShareOSWindow );
 
 			if( pShareQtWindow ) {
@@ -293,7 +308,7 @@ namespace eqQt
 	{
 		const eq::Window* pShareWindow = getWindow()->getSharedContextWindow();
 		if( pShareWindow ) {
-			const eq::OSWindow* pShareOSWindow = pShareWindow->getOSWindow();
+			const eq::SystemWindow* pShareOSWindow = pShareWindow->getSystemWindow();
 			const QtWindow* pShareQtWindow = dynamic_cast< const QtWindow* >( pShareOSWindow );
 
 			if( pShareQtWindow ) {

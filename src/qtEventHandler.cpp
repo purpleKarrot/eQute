@@ -47,7 +47,7 @@ namespace eqQt
 
 		// translate to eq::Event
 		eq::Event eqEvent;
-		eqEvent.type = eq::Event::POINTER_BUTTON_PRESS;
+		eqEvent.type = eq::Event::CHANNEL_POINTER_BUTTON_PRESS;
 		eqEvent.pointerButtonPress.button = convertQtButtonToEqButton( pEvent->button() );
 		eqEvent.pointerButtonPress.buttons = convertQtButtonsToEqButtons( pEvent->buttons() );
 
@@ -78,7 +78,7 @@ namespace eqQt
 
 		// translate to eq::Event
 		eq::Event eqEvent;
-		eqEvent.type = eq::Event::POINTER_BUTTON_RELEASE;
+		eqEvent.type = eq::Event::CHANNEL_POINTER_BUTTON_RELEASE;
 		eqEvent.pointerButtonPress.button = convertQtButtonToEqButton( pEvent->button() );
 		eqEvent.pointerButtonPress.buttons = convertQtButtonsToEqButtons( pEvent->buttons() );
 
@@ -107,7 +107,7 @@ namespace eqQt
 
 		// translate to eq::Event
 		eq::Event eqEvent;
-		eqEvent.type = eq::Event::POINTER_MOTION;
+		eqEvent.type = eq::Event::CHANNEL_POINTER_MOTION;
 		eqEvent.pointerMotion.buttons = convertQtButtonsToEqButtons( pEvent->buttons() );
 
 		//TODO do this recursively, until we reach the screen?

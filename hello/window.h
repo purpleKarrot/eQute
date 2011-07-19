@@ -24,10 +24,10 @@
 #include "qtWindow.h"
 
 
-class Window : public eq::Window
+class Window_ : public eq::Window
 {
 public:
-	Window( eq::Pipe* pParent ) : eq::Window( pParent ), m_pQtWindow( 0 ) {}
+	Window_( eq::Pipe* pParent ) : eq::Window( pParent ), m_pQtWindow( 0 ) {}
 
 	//eqQt::QtWindowIF* getQtWindow() { return m_pQtWindow; }
 

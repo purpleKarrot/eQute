@@ -37,9 +37,7 @@ int main(int argc, char *argv[])
 	int result = q.exec();
 
 	// wait for equalizer to finish
-	void* pAppThreadReturn;
-	appThread.join( &pAppThreadReturn );
-	result += ( int )pAppThreadReturn; // hrm..
+	appThread.join();
 
 	return result;
 }

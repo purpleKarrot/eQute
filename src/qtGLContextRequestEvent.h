@@ -54,4 +54,4 @@ namespace eqQt
 }
 
 
-#endif EQQT_QTGLCONTEXTEVENT_H
+#endif /* EQQT_QTGLCONTEXTEVENT_H */

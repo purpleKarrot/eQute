@@ -47,8 +47,6 @@ namespace eqQt
 	// events it receives to its QtEventHandler.
 	class QtGLWidget : public QGLWidget, protected QtWindowListener
 	{
-		Q_OBJECT
-
 	public:
 		QtGLWidget( QtWindowIF* pQtWindow, QWidget* pParent );
 		virtual ~QtGLWidget();

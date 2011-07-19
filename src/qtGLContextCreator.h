@@ -40,8 +40,6 @@ namespace eqQt
 	// the actual contextRequestEvent function.
 	class QtGLContextCreator : public QObject
 	{
-		Q_OBJECT
-
 	public:
 		QtGLContextCreator();
 

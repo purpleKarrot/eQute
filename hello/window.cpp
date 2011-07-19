@@ -20,7 +20,7 @@
 #include "qtWindow.h"
 
 
-bool Window::configInitOSWindow( const uint32_t initID )
+bool Window_::configInitOSWindow( const uint32_t initID )
 {
 	m_pQtWindow = new eqQt::QtWindow( this );
 
@@ -31,7 +31,7 @@ bool Window::configInitOSWindow( const uint32_t initID )
 		return false;
 	}
 
-	setOSWindow( m_pQtWindow );
+	setSystemWindow( m_pQtWindow );
 
 	return true;
 }

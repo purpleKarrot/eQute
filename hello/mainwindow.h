@@ -29,8 +29,6 @@
 
 class MainWindow : public eqQt::QtMainWindow
 {
-	Q_OBJECT
-
 public:
 	MainWindow( eqQt::QtWindowIF* pQtWindow, QWidget* pParent = 0 );
 	~MainWindow();

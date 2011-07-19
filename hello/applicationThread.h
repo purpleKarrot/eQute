@@ -19,15 +19,15 @@
 #define APPLICATIONTHREAD_H
 
 
-#include <eq/base/thread.h>
+#include <co/base/thread.h>
 
 
-class ApplicationThread : public eq::base::Thread
+class ApplicationThread : public co::base::Thread
 {
 public:
 	ApplicationThread( int argc, char** argv );
 
-	void* run();
+	void run();
 
 private:
 	int			m_argc;

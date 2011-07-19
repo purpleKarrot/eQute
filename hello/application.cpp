@@ -43,8 +43,7 @@ int Application::run()
 
 	// 3. init config
 	if( !pConfig->init( spin ) ) {
-		EQERROR << "Config initialization failed: " 
-				<< pConfig->getErrorMessage() << std::endl;
+		EQERROR << "Config initialization failed! " << std::endl;
 		pServer->releaseConfig( pConfig );
 		disconnectServer( pServer );
 		return EXIT_FAILURE;

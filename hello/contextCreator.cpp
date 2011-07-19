@@ -15,12 +15,18 @@
 * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <QMetaType>
+#include <QDataStream>
+#include <QtGui/QCursor>
+#include <QtGui/QStyleOption>
+#include <QtCore/QVariant>
+
 #include "contextCreator.h"
 
 #include "qtGLContextRequestEvent.h"
 #include "qtWindow.h"
 
-#include "mainWindow.h"
+#include "mainwindow.h"
 
 
 ContextCreator::~ContextCreator()

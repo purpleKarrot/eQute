@@ -42,8 +42,6 @@ namespace eqQt
 	// Meant to be subclassed by an application-specific MainWindow.
 	class QtMainWindow : public QMainWindow, protected QtWindowListener
 	{
-		Q_OBJECT
-
 	public:
 		QtMainWindow( QtWindowIF* pQtWindow, QWidget* pParent = 0 );
 		virtual ~QtMainWindow();

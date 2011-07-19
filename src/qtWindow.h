@@ -66,7 +66,10 @@ namespace eqQt
 		virtual const QtGLWidget* getShareQtGLWidget() const = 0;
 
 		// eq Event handling: forward to Window
-		virtual bool processEvent( const eq::Event& event ) { return _window->processEvent( event ); }
+		virtual bool processEvent( const eq::Event& event )
+		{
+			return this->getWindow()->processEvent( event );
+		}
 
 		// add/remove listeners
 		bool registerListener( QtWindowListener* pListener );

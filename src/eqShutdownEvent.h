@@ -42,4 +42,4 @@ namespace eqQt
 }
 
 
-#endif EQQT_EQSHUTDOWNEVENT_H
+#endif /* EQQT_EQSHUTDOWNEVENT_H */

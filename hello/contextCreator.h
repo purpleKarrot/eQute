@@ -33,8 +33,6 @@ class MainWindow;
 
 class ContextCreator : public eqQt::QtGLContextCreator
 {
-	Q_OBJECT
-
 public:
 	virtual ~ContextCreator();
 

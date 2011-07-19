@@ -25,7 +25,7 @@
 class NodeFactory : public eq::NodeFactory
 {
 public:
-	virtual eq::Window*	 createWindow(  eq::Pipe*   pParent ) { return new Window(  pParent ); }
+	virtual eq::Window*	 createWindow(  eq::Pipe*   pParent ) { return new Window_( pParent ); }
 	virtual eq::Channel* createChannel( eq::Window* pParent ) { return new Channel( pParent ); }
 };
 
@@ -34,31 +34,29 @@ ApplicationThread::ApplicationThread( int argc, char** argv )
 {
 }
 
-void* ApplicationThread::run()
+void ApplicationThread::run()
 {
 	// 1. Equalizer initialization
 	NodeFactory nodeFactory;
 	if( !eq::init( m_argc, m_argv, &nodeFactory ) ) {
 		EQERROR << "Equalizer init failed" << std::endl;
-		return ( void* )EXIT_FAILURE;
+		return;
 	}
 
 	// 2. initialization of local client node
-	eq::base::RefPtr< Application > client = new Application();
+	co::base::RefPtr< Application > client = new Application();
 	if( !client->initLocal( m_argc, m_argv ) ) {
 		EQERROR << "Can't init client" << std::endl;
 		eq::exit();
-		return ( void* )EXIT_FAILURE;
+		return;
 	}
 
 	// 3. run client
-	int returnValue = client->run();
+	client->run();
 
 	// 4. cleanup and exit
 	client->exitLocal();
 	client = 0;
 
 	eq::exit();
-
-	return ( void* )returnValue;
 }
