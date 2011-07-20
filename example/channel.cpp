@@ -21,7 +21,7 @@ Channel::Channel(eq::Window* pParent) :
 {
 }
 
-void Channel::frameDraw(const uint32_t spin)
+void Channel::frameDraw(const eq::uint128_t& spin)
 {
 	// setup OpenGL State
 	eq::Channel::frameDraw(spin);
@@ -33,7 +33,7 @@ void Channel::frameDraw(const uint32_t spin)
 	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
 
 	// rotate scene around the origin
-	glRotatef(static_cast<float>(spin) * 0.1f, 1.0f, 0.5f, 0.25f);
+	glRotatef(spin.low() * 0.1f, 1.0f, 0.5f, 0.25f);
 
 	// render six axis-aligned colored quads around the origin
 	//  front

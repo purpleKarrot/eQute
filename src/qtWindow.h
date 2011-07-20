@@ -45,7 +45,7 @@ public:
 			GLWindow(pParent)
 	{
 	}
-	;
+
 	virtual ~QtWindowIF()
 	{
 	}
@@ -116,6 +116,7 @@ public:
 	{
 		return m_pContext;
 	}
+
 	virtual const QGLContext* getQGLContext() const
 	{
 		return m_pContext;
@@ -125,6 +126,7 @@ public:
 	{
 		m_pWidget = pWidget;
 	}
+
 	virtual QtGLWidget* getQtGLWidget()
 	{
 		return m_pWidget;
@@ -133,6 +135,7 @@ public:
 	{
 		return m_pWidget;
 	}
+
 	virtual QtGLWidget* getShareQtGLWidget();
 	virtual const QtGLWidget* getShareQtGLWidget() const;
 

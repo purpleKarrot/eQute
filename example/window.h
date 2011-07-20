@@ -30,7 +30,7 @@ public:
 	}
 
 protected:
-	virtual bool configInitOSWindow(const uint32_t initID);
+	virtual bool configInitSystemWindow(const eq::uint128_t& initID);
 
 private:
 	eqQt::QtWindowIF* m_pQtWindow;

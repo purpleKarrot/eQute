@@ -25,7 +25,7 @@ public:
 	Channel(eq::Window* pParent);
 
 protected:
-	void frameDraw(const uint32_t frameID);
+	void frameDraw(const eq::uint128_t& frameID);
 };
 
 #endif // CHANNEL_H

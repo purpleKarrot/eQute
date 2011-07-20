@@ -18,7 +18,7 @@
 
 #include "qtWindow.h"
 
-bool Window_::configInitOSWindow(const uint32_t initID)
+bool Window_::configInitSystemWindow(const eq::uint128_t& initID)
 {
 	m_pQtWindow = new eqQt::QtWindow(this);
 
