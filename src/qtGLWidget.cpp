@@ -34,8 +34,8 @@
 namespace eqQt
 {
 
-QtGLWidget::QtGLWidget(QtWindowIF* pQtWindow, QWidget* pParent) :
-		QGLWidget(pQtWindow->getQGLContext(), pParent, pQtWindow->getShareQtGLWidget()), m_pQtWindow(pQtWindow), m_qtEventHandler(pQtWindow)
+QtGLWidget::QtGLWidget(QtWindow* window, QWidget* pParent) :
+		QGLWidget(window->getQGLContext(), pParent, window->getShareQtGLWidget()), m_pQtWindow(window), m_qtEventHandler(window)
 {
 	setAutoBufferSwap(false);
 
@@ -55,7 +55,7 @@ QtGLWidget::~QtGLWidget()
 	}
 }
 
-eqQt::QtWindowIF* QtGLWidget::lockQtWindow()
+eqQt::QtWindow* QtGLWidget::lockQtWindow()
 {
 	m_mutex.lock();
 	return m_pQtWindow;

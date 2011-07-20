@@ -12,7 +12,6 @@ add_executable(eQExample
   main.cpp
   contextCreator.cpp
   mainwindow.cpp
-  window.cpp
   )
 
 target_link_libraries(eQExample

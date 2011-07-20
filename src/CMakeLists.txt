@@ -6,7 +6,6 @@ qt4_wrap_cpp(EQUTE_MOC
 add_library(eQute SHARED
   ${EQUTE_MOC}
   application.cpp
-  eqShutdownEvent.cpp
   qtEventHandler.cpp
   qtGLContextCreator.cpp
   qtGLContextRequestEvent.cpp

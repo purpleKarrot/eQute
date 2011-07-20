@@ -14,14 +14,33 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "eqShutdownEvent.h"
+#ifndef WINDOW_H
+#define WINDOW_H
 
-namespace eqQt
+#include <eq/client/window.h>
+
+template<typename SystemWindow>
+struct Window_: eq::Window
 {
+	Window_(eq::Pipe* parent) :
+			eq::Window(parent)
+	{
+	}
 
-EqShutdownEvent::EqShutdownEvent() :
-		QEvent((QEvent::Type) EqShutdown)
-{
-}
+	bool configInitSystemWindow(const eq::uint128_t&)
+	{
+		SystemWindow* system_window = new SystemWindow(this);
 
-} // namespace eqQt
+		if (!system_window->configInit())
+		{
+			EQWARN << "SystemWindow initialization failed" << std::endl;
+			delete system_window;
+			return false;
+		}
+
+		setSystemWindow(system_window);
+		return true;
+	}
+};
+
+#endif // WINDOW_H

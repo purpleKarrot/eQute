@@ -32,7 +32,7 @@ namespace eqQt
 {
 
 class EqShutdownEvent;
-class QtWindowIF;
+class QtWindow;
 
 // Implementation of a QMainWindow that forwards events it receives
 // to a QtEventHandler (if one is set).
@@ -40,11 +40,11 @@ class QtWindowIF;
 class QtMainWindow: public QMainWindow, protected QtWindowListener
 {
 public:
-	QtMainWindow(QtWindowIF* pQtWindow, QWidget* pParent = 0);
+	QtMainWindow(QtWindow* window, QWidget* pParent = 0);
 	virtual ~QtMainWindow();
 
 protected:
-	eqQt::QtWindowIF* lockQtWindow();
+	eqQt::QtWindow* lockQtWindow();
 	void unlockQtWindow();
 
 	virtual bool event(QEvent* pEvent);
@@ -60,7 +60,7 @@ protected:
 	virtual void afterConfigExit();
 
 private:
-	QtWindowIF* m_pQtWindow;
+	QtWindow* m_pQtWindow;
 	QMutex m_mutex;
 
 	QtEventHandler m_qtEventHandler;

@@ -39,18 +39,18 @@ namespace eqQt
 {
 
 class EqShutdownEvent;
-class QtWindowIF;
+class QtWindow;
 
 // Implementation of a QGLWidget (basically a drawable) that forwards
 // events it receives to its QtEventHandler.
 class QtGLWidget: public QGLWidget, protected QtWindowListener
 {
 public:
-	QtGLWidget(QtWindowIF* pQtWindow, QWidget* pParent);
+	QtGLWidget(QtWindow* window, QWidget* pParent);
 	virtual ~QtGLWidget();
 
 protected:
-	eqQt::QtWindowIF* lockQtWindow();
+	eqQt::QtWindow* lockQtWindow();
 	void unlockQtWindow();
 
 	virtual bool event(QEvent* pEvent);
@@ -75,7 +75,7 @@ protected:
 	virtual void afterConfigExit();
 
 private:
-	QtWindowIF* m_pQtWindow;
+	QtWindow* m_pQtWindow;
 	QMutex m_mutex;
 
 	QtEventHandler m_qtEventHandler;

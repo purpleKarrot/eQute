@@ -35,7 +35,10 @@ public:
 		EqShutdown = QEvent::User + 10001
 	};
 
-	EqShutdownEvent();
+	EqShutdownEvent() :
+			QEvent((QEvent::Type) EqShutdown)
+	{
+	}
 };
 
 } // namespace eqQt

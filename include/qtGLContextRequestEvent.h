@@ -26,7 +26,7 @@ namespace eqQt
 {
 
 class QtGLContext;
-class QtWindowIF;
+class QtWindow;
 
 // Custom Qt event encapsulating a request for a Qt context.
 // This is created by the QtWindows and posted to the QtGLContextCreator,
@@ -39,9 +39,9 @@ public:
 		QtGLContextRequest = QEvent::User + 10000
 	};
 
-	QtGLContextRequestEvent(QtWindowIF* pQtWindow, QWaitCondition* pNotify);
+	QtGLContextRequestEvent(QtWindow* window, QWaitCondition* pNotify);
 
-	QtWindowIF* getQtWindow()
+	QtWindow* getQtWindow()
 	{
 		return m_pQtWindow;
 	}
@@ -49,7 +49,7 @@ public:
 	void contextFinished();
 
 private:
-	QtWindowIF* m_pQtWindow;
+	QtWindow* m_pQtWindow;
 	QWaitCondition* m_pNotify;
 };
 

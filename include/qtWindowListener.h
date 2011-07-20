@@ -23,44 +23,10 @@ namespace eqQt
 // Interface for listeners to the state of a QtWindow.
 // Listeners are notified before and after the execution of each
 // eq task method.
-class QtWindowListener
+struct QtWindowListener
 {
-public:
-	virtual void beforeConfigInit()
-	{
-	}
-
-	virtual void afterConfigInit(bool success)
-	{
-	}
-
-	virtual void beforeConfigExit()
-	{
-	}
-
-	virtual void afterConfigExit()
-	{
-	}
-
-	virtual void beforeMakeCurrent() const
-	{
-	}
-
-	virtual void afterMakeCurrent() const
-	{
-	}
-
-	virtual void beforeSwapBuffers()
-	{
-	}
-
-	virtual void afterSwapBuffers()
-	{
-	}
-
-	// no fbo support (yet?), so we don't need this:
-	//virtual void beforeBindFrameBuffer() const {};
-	//virtual void afterBindFrameBuffer() const {};
+	virtual void beforeConfigExit() = 0;
+	virtual void afterConfigExit() = 0;
 };
 
 } // namespace eqQt

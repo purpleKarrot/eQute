@@ -30,8 +30,8 @@
 namespace eqQt
 {
 
-QtEventHandler::QtEventHandler(QtWindowIF* pQtWindow) :
-		m_pQtWindow(pQtWindow)
+QtEventHandler::QtEventHandler(QtWindow* window) :
+		m_pQtWindow(window)
 {
 }
 

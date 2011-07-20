@@ -44,18 +44,12 @@
 namespace eqQt
 {
 
-bool QtWindowIF::configInit()
+bool QtWindow::configInit()
 {
-	notifyListenersBeforeConfigInit();
-
-	bool result = configInitImpl();
-
-	notifyListenersAfterConfigInit(result);
-
-	return result;
+	return this->configInitImpl();
 }
 
-void QtWindowIF::configExit()
+void QtWindow::configExit()
 {
 	notifyListenersBeforeConfigExit();
 
@@ -64,25 +58,17 @@ void QtWindowIF::configExit()
 	notifyListenersAfterConfigExit();
 }
 
-void QtWindowIF::makeCurrent() const
+void QtWindow::makeCurrent() const
 {
-	notifyListenersBeforeMakeCurrent();
-
 	makeCurrentImpl();
-
-	notifyListenersAfterMakeCurrent();
 }
 
-void QtWindowIF::swapBuffers()
+void QtWindow::swapBuffers()
 {
-	notifyListenersBeforeSwapBuffers();
-
 	swapBuffersImpl();
-
-	notifyListenersAfterSwapBuffers();
 }
 
-bool QtWindowIF::registerListener(QtWindowListener* pListener)
+bool QtWindow::registerListener(QtWindowListener* pListener)
 {
 	m_listenersMutex.lock();
 
@@ -93,7 +79,7 @@ bool QtWindowIF::registerListener(QtWindowListener* pListener)
 	return inserted.second;
 }
 
-bool QtWindowIF::unregisterListener(QtWindowListener* pListener)
+bool QtWindow::unregisterListener(QtWindowListener* pListener)
 {
 	m_listenersMutex.lock();
 
@@ -104,7 +90,7 @@ bool QtWindowIF::unregisterListener(QtWindowListener* pListener)
 	return erased > 0;
 }
 
-void QtWindowIF::unregisterAllListeners()
+void QtWindow::unregisterAllListeners()
 {
 	m_listenersMutex.lock();
 
@@ -113,52 +99,7 @@ void QtWindowIF::unregisterAllListeners()
 	m_listenersMutex.unlock();
 }
 
-void QtWindowIF::makeCurrentImpl() const
-{
-	GLWindow::makeCurrent();
-}
-
-void QtWindowIF::notifyListenersBeforeConfigInit()
-{
-	m_listenersMutex.lock();
-	ListenerSet::iterator it = m_listeners.begin(), itEnd = m_listeners.end();
-	m_listenersMutex.unlock();
-
-	while (it != itEnd)
-	{
-		QtWindowListener* pListener = *it;
-
-		// increment iterator before notifying listener,
-		// so this won't break if the listener unregisters itself
-		m_listenersMutex.lock();
-		it++;
-		m_listenersMutex.unlock();
-
-		pListener->beforeConfigInit();
-	}
-}
-
-void QtWindowIF::notifyListenersAfterConfigInit(bool success)
-{
-	m_listenersMutex.lock();
-	ListenerSet::iterator it = m_listeners.begin(), itEnd = m_listeners.end();
-	m_listenersMutex.unlock();
-
-	while (it != itEnd)
-	{
-		QtWindowListener* pListener = *it;
-
-		// increment iterator before notifying listener,
-		// so this won't break if the listener unregisters itself
-		m_listenersMutex.lock();
-		it++;
-		m_listenersMutex.unlock();
-
-		pListener->afterConfigInit(success);
-	}
-}
-
-void QtWindowIF::notifyListenersBeforeConfigExit()
+void QtWindow::notifyListenersBeforeConfigExit()
 {
 	m_listenersMutex.lock();
 	ListenerSet::iterator it = m_listeners.begin(), itEnd = m_listeners.end();
@@ -178,7 +119,7 @@ void QtWindowIF::notifyListenersBeforeConfigExit()
 	}
 }
 
-void QtWindowIF::notifyListenersAfterConfigExit()
+void QtWindow::notifyListenersAfterConfigExit()
 {
 	m_listenersMutex.lock();
 	ListenerSet::iterator it = m_listeners.begin(), itEnd = m_listeners.end();
@@ -196,95 +137,6 @@ void QtWindowIF::notifyListenersAfterConfigExit()
 
 		pListener->afterConfigExit();
 	}
-}
-
-void QtWindowIF::notifyListenersBeforeMakeCurrent() const
-{
-	m_listenersMutex.lock();
-	ListenerSet::const_iterator it = m_listeners.begin(), itEnd = m_listeners.end();
-	m_listenersMutex.unlock();
-
-	while (it != itEnd)
-	{
-		QtWindowListener* pListener = *it;
-
-		// increment iterator before notifying listener,
-		// so this won't break if the listener unregisters itself
-		m_listenersMutex.lock();
-		it++;
-		m_listenersMutex.unlock();
-
-		pListener->beforeMakeCurrent();
-	}
-}
-
-void QtWindowIF::notifyListenersAfterMakeCurrent() const
-{
-	m_listenersMutex.lock();
-	ListenerSet::const_iterator it = m_listeners.begin(), itEnd = m_listeners.end();
-	m_listenersMutex.unlock();
-
-	while (it != itEnd)
-	{
-		QtWindowListener* pListener = *it;
-
-		// increment iterator before notifying listener,
-		// so this won't break if the listener unregisters itself
-		m_listenersMutex.lock();
-		it++;
-		m_listenersMutex.unlock();
-
-		pListener->afterMakeCurrent();
-	}
-}
-
-void QtWindowIF::notifyListenersBeforeSwapBuffers()
-{
-	m_listenersMutex.lock();
-	ListenerSet::iterator it = m_listeners.begin(), itEnd = m_listeners.end();
-	m_listenersMutex.unlock();
-
-	while (it != itEnd)
-	{
-		QtWindowListener* pListener = *it;
-
-		// increment iterator before notifying listener,
-		// so this won't break if the listener unregisters itself
-		m_listenersMutex.lock();
-		it++;
-		m_listenersMutex.unlock();
-
-		pListener->beforeSwapBuffers();
-	}
-}
-
-void QtWindowIF::notifyListenersAfterSwapBuffers()
-{
-	m_listenersMutex.lock();
-	ListenerSet::iterator it = m_listeners.begin(), itEnd = m_listeners.end();
-	m_listenersMutex.unlock();
-
-	while (it != itEnd)
-	{
-		QtWindowListener* pListener = *it;
-
-		// increment iterator before notifying listener,
-		// so this won't break if the listener unregisters itself
-		m_listenersMutex.lock();
-		it++;
-		m_listenersMutex.unlock();
-
-		pListener->afterSwapBuffers();
-	}
-}
-
-QtWindow::QtWindow(eq::Window* pParent) :
-		QtWindowIF(pParent), m_pContext(0), m_pWidget(0)
-{
-}
-
-QtWindow::~QtWindow()
-{
 }
 
 QtGLWidget* QtWindow::getShareQtGLWidget()

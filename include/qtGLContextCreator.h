@@ -24,8 +24,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QWaitCondition>
 
-class QEvent;
-
 namespace eqQt
 {
 

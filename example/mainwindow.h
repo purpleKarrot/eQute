@@ -27,8 +27,8 @@
 class MainWindow: public eqQt::QtMainWindow
 {
 public:
-	MainWindow(eqQt::QtWindowIF* pQtWindow, QWidget* pParent = 0);
-	~MainWindow();
+	MainWindow(eqQt::QtWindow* window);
+	virtual ~MainWindow();
 
 private:
 	Ui::MainWindowClass ui;

@@ -27,8 +27,8 @@
 namespace eqQt
 {
 
-QtMainWindow::QtMainWindow(QtWindowIF* pQtWindow, QWidget* pParent) :
-		QMainWindow(pParent), m_pQtWindow(pQtWindow), m_qtEventHandler(pQtWindow)
+QtMainWindow::QtMainWindow(QtWindow* window, QWidget* pParent) :
+		QMainWindow(pParent), m_pQtWindow(window), m_qtEventHandler(window)
 {
 	QMutexLocker locker(&m_mutex);
 
@@ -45,7 +45,7 @@ QtMainWindow::~QtMainWindow()
 	}
 }
 
-eqQt::QtWindowIF* QtMainWindow::lockQtWindow()
+eqQt::QtWindow* QtMainWindow::lockQtWindow()
 {
 	m_mutex.lock();
 	return m_pQtWindow;
@@ -107,8 +107,7 @@ void QtMainWindow::beforeConfigExit()
 void QtMainWindow::afterConfigExit()
 {
 	// send an EqShutdownEvent to ourselves, to be handled in the main thread
-	EqShutdownEvent* pEvent = new EqShutdownEvent();
-	qApp->postEvent(this, pEvent);
+	qApp->postEvent(this, new EqShutdownEvent);
 }
 
 } // namespace eqQt

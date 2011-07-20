@@ -111,8 +111,8 @@ void ApplicationImpl::run(int argc, char* argv[], eq::NodeFactory* nodeFactory)
 	}
 
 	config->finishAllFrames();
-	config->exit();
 	server->releaseConfig(config);
+	config->exit();
 	client->disconnectServer(server);
 	client->exitLocal();
 

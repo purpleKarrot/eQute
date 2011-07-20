@@ -16,12 +16,12 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(eqQt::QtWindowIF* pQtWindow, QWidget* pParent) :
-		eqQt::QtMainWindow(pQtWindow, pParent), m_pGLWidget(0)
+MainWindow::MainWindow(eqQt::QtWindow* window) :
+		eqQt::QtMainWindow(window), m_pGLWidget(0)
 {
 	ui.setupUi(this);
 
-	eqQt::QtWindowIF* pLockedQtWindow = lockQtWindow();
+	eqQt::QtWindow* pLockedQtWindow = lockQtWindow();
 
 	// create the gl widget
 	m_pGLWidget = new eqQt::QtGLWidget(pLockedQtWindow, centralWidget());
