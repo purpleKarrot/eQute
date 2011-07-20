@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 2.8.4 FATAL_ERROR)
 project(eQute)
 
-find_package(Boost "1.47" REQUIRED system NO_MODULE)
+find_package(Boost "1.47" REQUIRED system thread NO_MODULE)
 include(${Boost_USE_FILE})
 
 find_package(Equalizer "1.1" REQUIRED NO_MODULE)

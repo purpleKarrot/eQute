@@ -14,28 +14,37 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <QtGui/QApplication>
+#include <QApplication>
+#include <eQute/Application>
 
-#include "applicationThread.h"
+#include "channel.hpp"
+#include "window.h"
+
 #include "contextCreator.h"
 
-int main(int argc, char *argv[])
+struct eQExample: QApplication, eQute::Application
 {
-	// create the QApplication
-	QApplication q(argc, argv);
+	eQExample(int argc, char* argv[]) :
+			QApplication(argc, argv), eQute::Application(argc, argv)
+	{
+	}
 
-	// create the ContextCreator
+	eq::Window* createWindow(eq::Pipe* pParent)
+	{
+		return new Window_(pParent);
+	}
+
+	eq::Channel* createChannel(eq::Window* pParent)
+	{
+		return new Channel(pParent);
+	}
+};
+
+int main(int argc, char* argv[])
+{
+	// TODO: integrate into eQute::Application
 	ContextCreator cc;
 
-	// create & start the equalizer thread
-	ApplicationThread appThread(argc, argv);
-	appThread.start();
-
-	// run Qt event loop
-	int result = q.exec();
-
-	// wait for equalizer to finish
-	appThread.join();
-
-	return result;
+	eQExample app(argc, argv);
+	return app.exec();
 }
