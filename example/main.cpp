@@ -17,8 +17,9 @@
 #include <QApplication>
 #include <eQute/Application>
 
-#include "channel.hpp"
+#include "pipe.hpp"
 #include "window.hpp"
+#include "channel.hpp"
 
 #include "qtWindow.h"
 #include "contextCreator.h"
@@ -30,14 +31,19 @@ struct eQExample: QApplication, eQute::Application
 	{
 	}
 
-	eq::Window* createWindow(eq::Pipe* parent)
+	eq::Pipe* createPipe(eq::Node* node)
 	{
-		return new Window_<eqQt::QtWindow>(parent);
+		return new Pipe(node);
 	}
 
-	eq::Channel* createChannel(eq::Window* parent)
+	eq::Window* createWindow(eq::Pipe* pipe)
 	{
-		return new Channel(parent);
+		return new Window_<eqQt::QtWindow>(pipe);
+	}
+
+	eq::Channel* createChannel(eq::Window* window)
+	{
+		return new Channel(window);
 	}
 };
 

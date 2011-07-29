@@ -21,6 +21,9 @@
 
 #include <eq/client/glWindow.h>
 
+#include <boost/mpl/string.hpp>
+
+
 #include <QtCore/QMutex>
 
 #include "qtWindowListener.h"

@@ -17,8 +17,6 @@
 #ifndef CONTEXTCREATOR_H
 #define CONTEXTCREATOR_H
 
-#include <vector>
-
 #include "qtGLContextCreator.h"
 
 namespace eqQt
@@ -26,23 +24,15 @@ namespace eqQt
 class QtGLContextRequestEvent;
 }
 
-class MainWindow;
-
 class ContextCreator: public eqQt::QtGLContextCreator
 {
 public:
-	virtual ~ContextCreator();
-
-	const std::vector<MainWindow*>& getMainWindows()
+	virtual ~ContextCreator()
 	{
-		return m_mainWindows;
 	}
 
-protected:
-	void contextRequestEvent(eqQt::QtGLContextRequestEvent* pEvent);
-
 private:
-	std::vector<MainWindow*> m_mainWindows;
+	void contextRequestEvent(eqQt::QtGLContextRequestEvent* pEvent);
 };
 
 #endif // CONTEXTCREATOR_H

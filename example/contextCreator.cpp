@@ -27,15 +27,8 @@
 
 #include "mainwindow.h"
 
-ContextCreator::~ContextCreator()
-{
-	for (uint i = 0; i < m_mainWindows.size(); i++)
-		delete m_mainWindows[i];
-}
-
 void ContextCreator::contextRequestEvent(eqQt::QtGLContextRequestEvent* pEvent)
 {
 	MainWindow* pMW = new MainWindow(pEvent->getQtWindow());
-	m_mainWindows.push_back(pMW);
 	pMW->show();
 }
